@@ -21,7 +21,7 @@ app.use("/api/v1/auth", authenticationRouter);
 app.use("/api/v1/jobs", auth, jobsRouter); //! every route in jobs now is secure
 //! middlewares : end
 
-//! handling errors + other middlewares : start
+//! handling errors + other middlewares : start 
 app.use(notFound);
 app.use(errorHandlerMiddleWare);
 //! handling errors + other middlewares : end
