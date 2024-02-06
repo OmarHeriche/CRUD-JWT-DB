@@ -44,8 +44,8 @@ Email Validation Regex
 
 #### Mongoose Errors
 
-- Validation Errors
-- Duplicate (Email)
+- Validation Errors && duplicate i think those two will match khlui:)//done
+- Duplicate (Email)//done
 - Cast Error
 
 #### Security
