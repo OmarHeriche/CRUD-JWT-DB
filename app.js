@@ -12,7 +12,7 @@ const auth = require("./middleware/authentication");
 const cors=require('cors');
 const xss=require('xss-clean');
 const helmet=require('helmet');
-const express_limit=require('express-rate-limit');
+const rateLimiter=require('express-rate-limit');
 
 //!importing : end
 
