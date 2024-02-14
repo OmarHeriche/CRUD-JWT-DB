@@ -8,8 +8,11 @@ const {
 } = require("../errors");
 
 const register = async (req, res) => {
+  console.log("before the user is created");//! here the user is created
   const user = await User.create({ ...req.body }); //todo treat the internal server error comming from here later
+  console.log("after the user is created");//! here the user is created
   const token = user.createToken();
+  console.log("token= ", token);//! here the token is created
   res.status(StatusCodes.CREATED).json({
     user: {
       name: user.name,
@@ -27,7 +30,7 @@ const login = async (req, res) => {
   if (!user) {
     throw new UnAuthonticatedError("invalid email");
   }
-  const truePassword =  user.cmparePassword(password);
+  const truePassword = user.cmparePassword(password);
   if (!truePassword) {
     throw new UnAuthonticatedError("invalid password");
   }

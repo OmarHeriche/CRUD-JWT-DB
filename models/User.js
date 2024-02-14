@@ -30,6 +30,7 @@ userScheema.pre("save", function (next) {
   next();
 });
 userScheema.methods.createToken = function () {
+  console.log("im in the create token method");//! here the token is created
   return jwt.sign(
     { name: this.name, userId: this._id },
     process.env.JWT_SECRET,
@@ -38,8 +39,8 @@ userScheema.methods.createToken = function () {
     }
   );
 };
-userScheema.methods.cmparePassword = async function(currentPassword){
-  const isMatch=  bcrypt.compareSync(currentPassword, this.password);
+userScheema.methods.cmparePassword = async function (currentPassword) {
+  const isMatch = bcrypt.compareSync(currentPassword, this.password);
   return isMatch;
 };
 module.exports = mongoose.model("User", userScheema);
