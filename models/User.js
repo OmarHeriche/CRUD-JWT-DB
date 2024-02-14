@@ -30,12 +30,11 @@ userScheema.pre("save", function (next) {
   next();
 });
 userScheema.methods.createToken = function () {
-  console.log("im in the create token method");//! here the token is created
   return jwt.sign(
     { name: this.name, userId: this._id },
     process.env.JWT_SECRET,
     {
-      expiresIn: "1h",
+      expiresIn: "30d",
     }
   );
 };

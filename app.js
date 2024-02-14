@@ -41,7 +41,7 @@ app.use("/api/v1/jobs", auth, jobsRouter); //! every route in jobs now is secure
 
 //! handling errors + other middlewares : start 
 app.use(notFound);
-// app.use(errorHandlerMiddleWare);
+app.use(errorHandlerMiddleWare);
 //! handling errors + other middlewares : end
 
 const port = process.env.PORT || 3000;
