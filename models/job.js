@@ -9,8 +9,8 @@ const jobScheema = new mongoose.Schema(
     },
     position: {
       type: String,
-      required: [true, "as kbibe said one day : send me ur location rani jay"],
-      maxlength: 30,
+      required: [true, "enter you location"],
+      maxlength: 30, 
     },
     status: {
       type: String,
