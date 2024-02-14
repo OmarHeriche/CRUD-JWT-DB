@@ -35,7 +35,7 @@ userScheema.methods.createToken = function () {
     { name: this.name, userId: this._id },
     process.env.JWT_SECRET,
     {
-      expiresIn: process.env.JWT_LIFE_TIME,
+      expiresIn: "1h",
     }
   );
 };
