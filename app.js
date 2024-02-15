@@ -1,7 +1,6 @@
 //!importing : start
 const express = require("express");
 const emptyObject = new Object();
-
 require("dotenv").config();
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleWare = require("./middleware/error-handler");
@@ -15,7 +14,6 @@ const cors=require('cors');
 const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
-
 //!importing : end
 
 const app = express();

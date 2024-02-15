@@ -22,6 +22,10 @@ const userScheema = new mongoose.Schema({
     required: [true, "enter the password"],
     minlength: 6,
   },
+  //! add the refreshToken
+  refreshToken: {
+    type: String,
+  },
 });
 
 userScheema.pre("save", function (next) {
@@ -29,15 +33,28 @@ userScheema.pre("save", function (next) {
   this.password = bcrypt.hashSync(this.password, salt);
   next();
 });
-userScheema.methods.createToken = function () {
+
+
+
+userScheema.methods.createAccessToken = function () {
   return jwt.sign(
     { name: this.name, userId: this._id },
-    process.env.JWT_SECRET,
+    process.env.AccessTokeSecret,
     {
-      expiresIn: "30d",
+      expiresIn: "30s",
     }
   );
 };
+userScheema.methods.createRefreshToken = function () {
+  return jwt.sign(
+    { name: this.name, userId: this._id },
+    process.env.RefreshTokenSecret,
+    {
+      expiresIn: "1d",
+    }
+  );
+};
+
 userScheema.methods.cmparePassword = async function (currentPassword) {
   const isMatch = bcrypt.compareSync(currentPassword, this.password);
   return isMatch;
