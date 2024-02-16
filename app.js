@@ -16,6 +16,7 @@ const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
 const refreshToken = require("./middleware/refreshToken");
+const refreshRouter = require('./routes/refresh');
 //!importing : end
 
 const app = express();
@@ -37,10 +38,10 @@ app.get("/", (req, res) => {
   res.send("hello there");
 });
 app.use("/api/v1/auth", authenticationRouter);
-// app.use(auth);
+app.use("/api/v1/refresh",refreshRouter);
+app.use(auth);
 // app.use(refreshToken);
-app.use("/api/v1/jobs",refreshToken,auth, jobsRouter); //! every route in jobs now is secure
-// app.use("/api/v1/jobs",refreshToken,auth, jobsRouter); //! if the access token is expired, the refresh token will be used to generate a new access token
+app.use("/api/v1/jobs", jobsRouter); //! every route in jobs now is secure
 
 //! middlewares : end
 

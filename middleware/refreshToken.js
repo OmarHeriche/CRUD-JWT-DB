@@ -3,10 +3,11 @@ require("dotenv").config();
 const { UnAuthonticatedError } = require("../errors");
 const User = require("../models/User");
 
-const refreshToken = async (req, res, next) => {
-
+const refreshToken = async (req, res) => {
+  
   console.log("req.user=", req.user); //todo temporary
   const refreshToken = req.cookies.refreshToken;
+  console.log("from refreshToken middleware refresh token:\n", refreshToken); //todo temporary
   if (!refreshToken) {
     console.log("no refresh token"); //todo temporary
     return res.status(401).json({ error: "you are not authenticated" });
@@ -26,9 +27,13 @@ const refreshToken = async (req, res, next) => {
     //!create the access token
     const accessToken = user.createAccessToken();
     //!send the access token to the client side
-    console.log("from refreshToken middleware:\n", accessToken); //todo temporary
-    req.headers.authorization = `Bearer ${accessToken}`;
-    next();
+    console.log("from refreshToken middleware access token:\n", accessToken); //todo temporary
+    // req.headers.authorization = `Bearer ${accessToken}`;
+    const token = accessToken;//todo to be removed
+    res.status(200).json({
+      token,
+    });
+    // next();
   } catch (error) {
     throw new UnAuthonticatedError("authentication invalid");
   }

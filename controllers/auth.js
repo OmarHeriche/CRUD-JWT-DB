@@ -67,9 +67,9 @@ const login = async (req, res) => {
   //! create the access token
   const accessToken = user.createAccessToken();
   //!create the refresh token
-  const refreshToken = user.createRefreshToken();
+  // const refreshToken = user.createRefreshToken();
   //!send the refresh token as a cookie
-  res.cookie("refreshToken", refreshToken, {
+  res.cookie("refreshToken", extraUser.refreshToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });

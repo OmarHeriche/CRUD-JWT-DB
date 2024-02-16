@@ -1,8 +1,11 @@
 const jwt = require("jsonwebtoken");
 const { UnAuthonticatedError } = require("../errors");
+const refreshToken = require("./refreshToken");
 require("dotenv").config();
+const express = require("express");
+const app = express();
 
-const auth = (req, res, next) => {
+const auth = async (req, res, next) => {
   if (
     !(
       req.headers.authorization.startsWith("Bearer") &&
@@ -22,7 +25,9 @@ const auth = (req, res, next) => {
     next();
   } catch (error) {
     // throw new UnAuthonticatedError("authentication invalid");
+    // console.log("from auth middleware:\n", error); //todo temporary
     next(new UnAuthonticatedError("authentication invalid"));
+    // app.use(refreshToken);
   }
 };
 
