@@ -4,7 +4,6 @@ const { UnAuthonticatedError } = require("../errors");
 const User = require("../models/User");
 
 const refreshToken = async (req, res) => {
-  //if access token valid ill leave it to the next middleware 
   
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {

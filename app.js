@@ -39,8 +39,8 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", authenticationRouter);
 app.use("/api/v1/refresh",refreshRouter);
-app.use(auth);
-app.use("/api/v1/jobs", jobsRouter); //! every route in jobs now is secure
+app.use(auth);//! every route in jobs now is secure
+app.use("/api/v1/jobs", jobsRouter); 
 
 //! middlewares : end
 
