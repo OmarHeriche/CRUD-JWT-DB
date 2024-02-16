@@ -41,7 +41,7 @@ userScheema.methods.createAccessToken = function () {
     { name: this.name, userId: this._id },
     process.env.AccessTokeSecret,
     {
-      expiresIn: "30s",
+      expiresIn: "10s",
     }
   );
 };

@@ -1,4 +1,5 @@
 //!importing : start
+const cookieParcer=require('cookie-parser');
 const express = require("express");
 const emptyObject = new Object();
 require("dotenv").config();
@@ -14,6 +15,7 @@ const cors=require('cors');
 const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
+const refreshToken = require("./middleware/refreshToken");
 //!importing : end
 
 const app = express();
@@ -28,13 +30,18 @@ app.use(xss());
 app.use(helmet());
 
 app.use(express.json());
+app.use(cookieParcer());
 
 //! middlewares : start
 app.get("/", (req, res) => {
   res.send("hello there");
 });
 app.use("/api/v1/auth", authenticationRouter);
-app.use("/api/v1/jobs", auth, jobsRouter); //! every route in jobs now is secure
+// app.use(auth);
+// app.use(refreshToken);
+app.use("/api/v1/jobs",refreshToken,auth, jobsRouter); //! every route in jobs now is secure
+// app.use("/api/v1/jobs",refreshToken,auth, jobsRouter); //! if the access token is expired, the refresh token will be used to generate a new access token
+
 //! middlewares : end
 
 //! handling errors + other middlewares : start 

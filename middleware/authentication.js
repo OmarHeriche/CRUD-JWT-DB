@@ -18,9 +18,11 @@ const auth = (req, res, next) => {
       userId: payload.userId,
       name: payload.name,
     }; //todo hna jbna l userI and the name from the payload :o
+    console.log("from auth middleware:\n", req.user); //todo temporary
     next();
   } catch (error) {
-    throw new UnAuthonticatedError("authentication invalid");
+    // throw new UnAuthonticatedError("authentication invalid");
+    next(new UnAuthonticatedError("authentication invalid"));
   }
 };
 
