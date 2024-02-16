@@ -4,17 +4,14 @@ const { UnAuthonticatedError } = require("../errors");
 const User = require("../models/User");
 
 const refreshToken = async (req, res) => {
+  //if access token valid ill leave it to the next middleware 
   
-  console.log("req.user=", req.user); //todo temporary
   const refreshToken = req.cookies.refreshToken;
-  console.log("from refreshToken middleware refresh token:\n", refreshToken); //todo temporary
   if (!refreshToken) {
-    console.log("no refresh token"); //todo temporary
     return res.status(401).json({ error: "you are not authenticated" });
   }
   const user = await User.findOne({ refreshToken });
   if (!user) {
-    console.log("no user"); //todo temporary
     return res.status(401).json({ error: "you are not authenticated" });
   }
   try {
@@ -27,13 +24,11 @@ const refreshToken = async (req, res) => {
     //!create the access token
     const accessToken = user.createAccessToken();
     //!send the access token to the client side
-    console.log("from refreshToken middleware access token:\n", accessToken); //todo temporary
     // req.headers.authorization = `Bearer ${accessToken}`;
     const token = accessToken;//todo to be removed
     res.status(200).json({
       token,
     });
-    // next();
   } catch (error) {
     throw new UnAuthonticatedError("authentication invalid");
   }

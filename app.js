@@ -40,7 +40,6 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authenticationRouter);
 app.use("/api/v1/refresh",refreshRouter);
 app.use(auth);
-// app.use(refreshToken);
 app.use("/api/v1/jobs", jobsRouter); //! every route in jobs now is secure
 
 //! middlewares : end
