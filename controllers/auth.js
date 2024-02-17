@@ -10,32 +10,28 @@ const {
 } = require("../errors");
 
 const register = async (req, res) => {
-  req.body.refreshToken= jwt.sign(
-    { name: req.body.name, userId: req.body._id },
-    process.env.RefreshTokenSecret,
-    {
-      expiresIn: "1d",
-    }
-  );
   const user = await User.create({ ...req.body }); //todo treat the internal server error comming from here later
                                     //? start
-  console.log("from controllers:\n",user);//todo temporary
   //! create the access token
   const accessToken = user.createAccessToken();
+  //! create the refresh token
+  const refreshToken=user.createRefreshToken();
   //!send the refresh token as a cookie
-  res.cookie("refreshToken", user.refreshToken, {
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });
-  const token = accessToken;//todo this shit is only for testing
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+  });
 
-  //!send access token to the client side
+  //!don't send access token to the client side
   res.status(StatusCodes.OK).json({
     user: { name: user.name },
-    token,
+    msg: "user created successfully"
   });
                                     //? end
-  
 };
 
 const login = async (req, res) => {
@@ -44,18 +40,6 @@ const login = async (req, res) => {
     throw new BadRequestError("please provide an email and password");
   }
   const user = await User.findOne({ email });
-
-  const extraUser= await User.findOneAndUpdate(
-    { email },
-    {refreshToken:jwt.sign(
-      { name: user.name, userId: user._id },
-      process.env.RefreshTokenSecret,
-      {
-        expiresIn: "1d",
-      }
-    )},
-    { new: true, runValidators: true }
-  );
 
   if (!user) {
     throw new UnAuthonticatedError("invalid email");
@@ -67,18 +51,21 @@ const login = async (req, res) => {
   //! create the access token
   const accessToken = user.createAccessToken();
   //!create the refresh token
-  // const refreshToken = user.createRefreshToken();
+  const refreshToken = user.createRefreshToken();
   //!send the refresh token as a cookie
-  res.cookie("refreshToken", extraUser.refreshToken, {
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });
-  const token = accessToken;//todo this shit is only for testing
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+  });
 
-  //!send access token to the client side
+  //!don't send access token to the client side
   res.status(StatusCodes.OK).json({
     user: { name: user.name },
-    token,
+    msg: "user logged in successfully"
   });
 };
 

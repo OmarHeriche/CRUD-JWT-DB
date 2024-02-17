@@ -37,8 +37,9 @@ app.use(cookieParcer());
 app.get("/", (req, res) => {
   res.send("hello there");
 });
+
 app.use("/api/v1/auth", authenticationRouter);
-app.use("/api/v1/refresh",refreshRouter);
+app.use(refreshToken);
 app.use(auth);//! every route in jobs now is secure
 app.use("/api/v1/jobs", jobsRouter); 
 

@@ -3,24 +3,26 @@ const { UnAuthonticatedError } = require("../errors");
 require("dotenv").config();
 
 const auth = async (req, res, next) => {
-  if (
-    !(
-      req.headers.authorization.startsWith("Bearer") &&
-      req.headers.authorization
-    )
-  ) {
-    throw new UnAuthonticatedError("authentication invalid");
+  console.log("auth middleware is working");//todo remove this line
+  const accessToken = req.cookies.accessToken;
+  if (!accessToken) {
+    // return res.status(401).json({ error: "you are not authenticated" });
+    console.log("the user is not authenticated yet no access token");//todo remove this line  
+    next();
   }
-  const token = req.headers.authorization.split(" ")[1];
   try {
-    const payload = jwt.verify(token, process.env.AccessTokeSecret);
+    const payload = jwt.verify(accessToken, process.env.AccessTokeSecret);
     req.user = {
       userId: payload.userId,
       name: payload.name,
     }; //todo hna jbna l userI and the name from the payload :o
+    req.expirationTime = payload.exp;
     next();
   } catch (error) {
-    throw new UnAuthonticatedError("authentication invalid");
+    // throw new UnAuthonticatedError("authentication invalid");//! here try put next(error) instead of throw; and see what will happen; and also try to put next() instead of throw; and see what will happen
+    console.log("the user is not authenticated yet catch error");//todo remove this line  
+    next();
+    return;
   }
 };
 
