@@ -25,7 +25,12 @@ const register = async (req, res) => {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });
-
+  const l3iba = jwt.verify(accessToken, process.env.AccessTokeSecret);
+  const expire=l3iba.exp;
+  res.cookie("expire", expire, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+  });
   //!don't send access token to the client side
   res.status(StatusCodes.OK).json({
     user: { name: user.name },
