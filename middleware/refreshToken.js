@@ -1,31 +1,27 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { UnAuthonticatedError } = require("../errors");
-const User = require("../models/User");
 
 const refreshToken = async (req, res, next) => {
   //?start
-  const accessToken = req.cookies.accessToken;
-
-  // const decodedToken = jwt.verify(accessToken, process.env.AccessTokeSecret);//! here we are verifying the access token li jaflena
-  // console.log("decodedToken", decodedToken);
   
-  if(req.expirationTime===undefined){
-    req.expirationTime=Math.floor(Date.now() / 1000);
-    console.log("chamouli9");
-  }
-  const expirationTime = req.expirationTime;//! here we are getting the expiration time from the access token
-  console.log("18\n",req.expirationTime);
-  
+  const expire = Number(req.cookies.expire);
+  console.log("expire : ",expire);
   const currentTime = Math.floor(Date.now() / 1000); 
-
-
-  if (expirationTime < currentTime) {
+  if(expire===undefined){
+    console.log("relogin/register please");
+    throw new UnAuthonticatedError("authentication invalid");
+  }
+  if (expire > currentTime) {
+    console.log("the access token is still valid");
     next();
     return;
   }
+  console.log("the access token is expired");
 
-  console.log("invoke the refresh token middleware");
+ 
+
+  console.log("----------invoke the refresh token middleware");
 
   //?end
   const refreshToken = req.cookies.refreshToken;
@@ -49,10 +45,13 @@ const refreshToken = async (req, res, next) => {
       }
       );
       const l3iba = jwt.verify(accessToken, process.env.AccessTokeSecret);
-      req.expirationTime=l3iba.exp;
-      console.log("52\n",req.expirationTime);
+      const expire=l3iba.exp;
     //!don't send the access token to the client side
     res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    });
+    res.cookie("expire", expire, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 30,
     });

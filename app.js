@@ -16,7 +16,6 @@ const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
 const refreshToken = require("./middleware/refreshToken");
-const refreshRouter = require('./routes/refresh');
 //!importing : end
 
 const app = express();
