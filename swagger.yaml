@@ -1,0 +1,255 @@
+openapi: 3.0.0
+info:
+  title: jobsApi
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://noclient.onrender.com/api/v1
+  variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: register
+      operationId: register
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/registerrequest'
+              - example:
+                  name: omar
+                  email: heriche@gmail.com
+                  password: passwond
+            example:
+              name: omar
+              email: heriche@gmail.com
+              password: passwond
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: login
+      operationId: login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/loginrequest'
+              - example:
+                  email: heriche@gmail.com
+                  password: passwond
+            example:
+              email: heriche@gmail.com
+              password: passwond
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /jobs:
+    get:
+      tags:
+      - Jobs
+      summary: getAllJobs
+      operationId: getAllJobs
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    post:
+      tags:
+      - Jobs
+      summary: createJob
+      operationId: createJob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/createJobRequest'
+              - example:
+                  company: sfsdfd
+                  status: pending
+                  position: dfssfergana
+            example:
+              company: sfsdfd
+              status: pending
+              position: dfssfergana
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /jobs/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The jobs ID
+    get:
+      tags:
+      - Jobs
+      summary: getSingleJob
+      operationId: getSingleJob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  
+    patch:
+      tags:
+      - Jobs
+      summary: updateJob
+      operationId: updateJob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/updateJobRequest'
+              - example:
+                  company: updated hannoni
+                  status: pending
+                  position: dergana
+            example:
+              company: updated hannoni
+              status: pending
+              position: dergana
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  
+    delete:
+      tags:
+      - Jobs
+      summary: deleteJob
+      operationId: deleteJob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+components:
+  schemas:
+    registerrequest:
+      title: registerrequest
+      required:
+      - name
+      - email
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: omar
+        email: heriche@gmail.com
+        password: passwond
+    loginrequest:
+      title: loginrequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: heriche@gmail.com
+        password: passwond
+    createJobRequest:
+      title: createJobRequest
+      required:
+      - company
+      - status
+      - position
+      type: object
+      properties:
+        company:
+          type: string
+        status:
+          type: string
+        position:
+          type: string
+      example:
+        company: sfsdfd
+        status: pending
+        position: dfssfergana
+    updateJobRequest:
+      title: updateJobRequest
+      required:
+      - company
+      - status
+      - position
+      type: object
+      properties:
+        company:
+          type: string
+        status:
+          type: string
+        position:
+          type: string
+      example:
+        company: updated hannoni
+        status: pending
+        position: dergana
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: Misc
+  description: ''
+- name: auth
+  description: ''
+- name: Jobs
+  description: ''

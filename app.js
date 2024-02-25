@@ -16,6 +16,9 @@ const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
 const refreshToken = require("./middleware/refreshToken");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
 //!importing : end
 
 const app = express();
@@ -34,9 +37,9 @@ app.use(cookieParcer());
 
 //! middlewares : start
 app.get("/", (req, res) => {
-  res.send("hello there");
+  res.send("<h1>Jobs API</h1><a href='/api-docs'>Documentation</a");
 });
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/v1/auth", authenticationRouter);
 app.use(refreshToken);
 app.use(auth);//! every route in jobs now is secure
