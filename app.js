@@ -16,9 +16,13 @@ const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
 const refreshToken = require("./middleware/refreshToken");
+const {logoutRouter}=require('./routes/logout');
+//todo docs start
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swagger.yaml");
+//todo docs end
+
 //!importing : end
 
 const app = express();
@@ -39,10 +43,11 @@ app.use(cookieParcer());
 app.get("/", (req, res) => {
   res.send("<h1>Jobs API</h1><a href='/api-docs'>Documentation</a");
 });
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));//todo docs for the api
 app.use("/api/v1/auth", authenticationRouter);
 app.use(refreshToken);
 app.use(auth);//! every route in jobs now is secure
+app.use("api/v1/logout",logoutRouter);
 app.use("/api/v1/jobs", jobsRouter); 
 
 //! middlewares : end
