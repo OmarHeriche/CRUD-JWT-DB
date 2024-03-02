@@ -16,7 +16,7 @@ const xss=require('xss-clean');
 const helmet=require('helmet');
 // const rateLimiter=require('express-rate-limit');
 const refreshToken = require("./middleware/refreshToken");
-const {logoutRouter}=require('./routes/logout');
+// const {logoutRouter}=require('./routes/logout');
 //todo docs start
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
@@ -47,7 +47,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));//todo d
 app.use("/api/v1/auth", authenticationRouter);
 app.use(refreshToken);
 app.use(auth);//! every route in jobs now is secure
-app.use("api/v1/logout",logoutRouter);
+// app.use("/api/v1/logout",logoutRouter);
+app.get("/api/v1/logout", (req, res) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+  res.clearCookie("expire");
+  res.status(200).json({ msg: "logged out successfully" });
+});
 app.use("/api/v1/jobs", jobsRouter); 
 
 //! middlewares : end
